@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 17, 2012 at 10:01 AM
--- Server version: 5.5.24
--- PHP Version: 5.3.10-1ubuntu3.2
+-- Generation Time: Nov 20, 2012 at 10:55 AM
+-- Server version: 5.5.28
+-- PHP Version: 5.3.10-1ubuntu3.4
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -253,6 +253,13 @@ CREATE TABLE IF NOT EXISTS `django_session` (
   PRIMARY KEY (`session_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `django_session`
+--
+
+INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
+('87d60e2f7c6626ee229bd408ff233161', 'gAJ9cQFVCnRlc3Rjb29raWVVBndvcmtlZHECcy5hMTIzZWQwZDkyMjEyMmJjYzc0ZWQ2YTM3YTU4\nZWMxNg==\n', '2012-10-07 10:11:01');
+
 -- --------------------------------------------------------
 
 --
@@ -315,7 +322,39 @@ CREATE TABLE IF NOT EXISTS `tcc_certification` (
   `status` varchar(1000) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `tcc_certification_28b1ef86` (`organisation_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `tcc_certification`
+--
+
+INSERT INTO `tcc_certification` (`id`, `organisation_id`, `status`) VALUES
+(1, 1, 'An Institute Offering Accredited Courses and supported under the FIST and TEQIP scheme of GOI'),
+(2, 1, 'Accredited By National Board of Accreditation (NBA), AICTE, New Delhi]'),
+(3, 1, 'ISO 9001-2000 Certified');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tcc_consultancy`
+--
+
+CREATE TABLE IF NOT EXISTS `tcc_consultancy` (
+  `name` char(100) DEFAULT NULL,
+  `department` int(11) DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`),
+  KEY `department_id` (`department`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `tcc_consultancy`
+--
+
+INSERT INTO `tcc_consultancy` (`name`, `department`, `id`) VALUES
+('Financial Management', 11, 1),
+('Marketing Management', 11, 2),
+('Human Resource Management', 11, 3);
 
 -- --------------------------------------------------------
 
@@ -324,16 +363,30 @@ CREATE TABLE IF NOT EXISTS `tcc_certification` (
 --
 
 CREATE TABLE IF NOT EXISTS `tcc_courses` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `department_id` int(11) NOT NULL,
-  `graduation_id` int(11) NOT NULL,
-  `timeperiod_id` int(11) NOT NULL,
-  `description` varchar(1000) NOT NULL,
+  `id` int(11) NOT NULL,
+  `name` char(100) DEFAULT NULL,
+  `pg_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `tcc_courses_2ae7390` (`department_id`),
-  KEY `tcc_courses_5889ca82` (`graduation_id`),
-  KEY `tcc_courses_12ea982e` (`timeperiod_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  KEY `pg_id` (`pg_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tcc_courses`
+--
+
+INSERT INTO `tcc_courses` (`id`, `name`, `pg_id`) VALUES
+(1, 'Structural Engineering (Full Time)', 1),
+(2, 'Geotechnical Engineering (Full Time & Part Time)', 1),
+(3, 'Environment Engineering (Full Time)', 1),
+(4, 'Production Engineering (Full Time & Part Time)', 2),
+(5, 'Industrial Engineering (Full Time & Part Time)', 2),
+(6, 'Power Engineering (Full Time)', 3),
+(7, 'Electrical Engineering (Part Time)', 3),
+(8, 'Computer Science & Engg. (Full time & Part Time)', 4),
+(9, 'Electronics Engineering (Full time & Part Time)', 5),
+(10, 'VLSI Design (Full time & Part Time)', 5),
+(11, 'Two Years (Full Time) Master Degree', 6),
+(12, 'Two Years (Full Time) Master Degree', 7);
 
 -- --------------------------------------------------------
 
@@ -355,7 +408,7 @@ CREATE TABLE IF NOT EXISTS `tcc_departments` (
   `about` longtext NOT NULL,
   PRIMARY KEY (`id`),
   KEY `tcc_departments_28b1ef86` (`organisation_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `tcc_departments`
@@ -366,14 +419,11 @@ INSERT INTO `tcc_departments` (`id`, `organisation_id`, `name`, `address`, `phon
 (2, 1, 'Civil Engineering ', '', '', '', '', '', '', '', ''),
 (3, 1, 'Electrical Engineering', '', '', '', '', '', '', '', ''),
 (4, 1, 'Electronics Engineering', '', '', '', '', '', '', '', ''),
-(5, 1, 'Mechanical Engineering', '', '', '', '', '', '', '', ''),
-(6, 1, 'Production Technology', '', '', '', '', '', '', '', ''),
-(7, 1, 'Computer Science Engineering', '', '', '', '', '', '', '', ''),
-(8, 1, 'Information Technology', '', '', '', '', '', '', '', ''),
+(5, 1, 'Mechanical Engineering & Production Technology', '', '', '', '', '', '', '', ''),
+(7, 1, 'Computer Science Engineering & Information Technol', '', '', '', '', '', '', '', ''),
 (9, 1, 'Applied Sciences', '', '', '', '', '', '', '', ''),
 (10, 1, 'Central Workshop', '', '', '', '', '', '', '', ''),
-(11, 1, 'MBA', '', '', '', '', '', '', '', ''),
-(12, 1, 'MCA', '', '', '', '', '', '', '', '');
+(11, 1, 'MBA', '', '', '', '', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -451,14 +501,27 @@ INSERT INTO `tcc_facilities` (`id`, `department_id`, `code`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tcc_graduation`
+-- Table structure for table `tcc_gcourses`
 --
 
-CREATE TABLE IF NOT EXISTS `tcc_graduation` (
+CREATE TABLE IF NOT EXISTS `tcc_gcourses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(1000) NOT NULL,
+  `name` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+
+--
+-- Dumping data for table `tcc_gcourses`
+--
+
+INSERT INTO `tcc_gcourses` (`id`, `name`) VALUES
+(1, 'Civil Engineering '),
+(2, 'Mechanical Engineering'),
+(3, 'Electrical Engineering'),
+(4, 'Electronics & Communication Engineering'),
+(5, 'Computer Science Engineering'),
+(6, 'Information Technology'),
+(7, 'Production Engineering');
 
 -- --------------------------------------------------------
 
@@ -469,7 +532,7 @@ CREATE TABLE IF NOT EXISTS `tcc_graduation` (
 CREATE TABLE IF NOT EXISTS `tcc_labs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `department_id` int(11) NOT NULL,
-  `name` varchar(300) NOT NULL,
+  `lab` varchar(300) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `tcc_labs_2ae7390` (`department_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=52 ;
@@ -478,7 +541,7 @@ CREATE TABLE IF NOT EXISTS `tcc_labs` (
 -- Dumping data for table `tcc_labs`
 --
 
-INSERT INTO `tcc_labs` (`id`, `department_id`, `name`) VALUES
+INSERT INTO `tcc_labs` (`id`, `department_id`, `lab`) VALUES
 (1, 2, 'Geo-technical Lab'),
 (2, 2, 'Transportation Engineering Lab'),
 (3, 2, 'Material Testing Lab'),
@@ -549,6 +612,8 @@ CREATE TABLE IF NOT EXISTS `tcc_organisation` (
   `email_2` varchar(75) NOT NULL,
   `website` varchar(50) NOT NULL,
   `history` longtext NOT NULL,
+  `prefix_table` char(100) NOT NULL,
+  `title` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
@@ -556,8 +621,33 @@ CREATE TABLE IF NOT EXISTS `tcc_organisation` (
 -- Dumping data for table `tcc_organisation`
 --
 
-INSERT INTO `tcc_organisation` (`id`, `name`, `address`, `phone`, `fax`, `director`, `logo_upload`, `email_1`, `email_2`, `website`, `history`) VALUES
-(1, 'Guru Nanak Dev Engineering College', 'Gill Park, Ludhiana', '', '', '', '', '', '', 'http://gndec.ac.in', 'Guru Nanak Dev Engineering College was established by the Nankana Sahib Education Trust (NSET) Ludhiana. The Nankana Sahib Education was founded in memory of the most sacred temple of Sri Nankana Sahib, birth palace of Sri Gurur Nanak Dev Ji. Shiromani Gururdwara Parbandhak Committee, Amritsar, a premier organisation of Univarsal Brotherhood, was the main force behind the mission of "Removal of Economic Backwardness through Technology". With this mission, a Polytecnhic was started in 1953 and Guru Nanak Dev Engineering College was established in 1956. Nankana Sahib Education Trust resolved to uplift the vast weaker section of Indian polity comprising of Rural India by admitting 70% students every year from rural areas. This commitment was made to nation on 8th April, 1956, the day foundation stone of the College building was laid by Dr. Rajendra Prasad Ji, the first president of India. Nearly 10,000 Graduate and 2000 Post-Graduate Engineers have passed out from this college during the last 49 years and are successfully employed in India and abroad. This college is now ISO 9001:2000 certified. Five branches of Engineering as listed below are Accredited by National Board of Accreditation, (NBA) AICTE, New Delhi. College is also supported under FIST and TEQIP scheme of Govt. of India and is a QIP centre of PhD research.\r\n  ');
+INSERT INTO `tcc_organisation` (`id`, `name`, `address`, `phone`, `fax`, `director`, `logo_upload`, `email_1`, `email_2`, `website`, `history`, `prefix_table`, `title`) VALUES
+(1, 'Guru Nanak Dev Engineering College', 'Gill Park, Ludhiana', '', '', '', '', '', '', 'http://gndec.ac.in', 'Guru Nanak Dev Engineering College was established by the Nankana Sahib Education Trust (NSET) Ludhiana. The Nankana Sahib Education was founded in memory of the most sacred temple of Sri Nankana Sahib, birth palace of Sri Gurur Nanak Dev Ji. Shiromani Gururdwara Parbandhak Committee, Amritsar, a premier organisation of Univarsal Brotherhood, was the main force behind the mission of "Removal of Economic Backwardness through Technology". With this mission, a Polytecnhic was started in 1953 and Guru Nanak Dev Engineering College was established in 1956. Nankana Sahib Education Trust resolved to uplift the vast weaker section of Indian polity comprising of Rural India by admitting 70$%$ students every year from rural areas. This commitment was made to nation on 8th April, 1956, the day foundation stone of the College building was laid by Dr. Rajendra Prasad Ji, the first president of India. Nearly 10,000 Graduate and 2000 Post-Graduate Engineers have passed out from this college during the last 49 years and are successfully employed in India and abroad. This college is now ISO 9001:2000 certified. Five branches of Engineering as listed below are Accredited by National Board of Accreditation, (NBA) AICTE, New Delhi. College is also supported under FIST and TEQIP scheme of Govt. of India and is a QIP centre of PhD research.\r\n  ', 'tcc_', 'Information Brochure');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tcc_pgcourses`
+--
+
+CREATE TABLE IF NOT EXISTS `tcc_pgcourses` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+
+--
+-- Dumping data for table `tcc_pgcourses`
+--
+
+INSERT INTO `tcc_pgcourses` (`id`, `name`) VALUES
+(1, 'Civil Engineering Deptt.'),
+(2, 'Mechanical Engineering Deptt.'),
+(3, 'Electrical Engineering Deptt.'),
+(4, 'Computer Science Engg.'),
+(5, 'Electronics Engineering Deptt.'),
+(6, 'MBA'),
+(7, 'MCA');
 
 -- --------------------------------------------------------
 
@@ -743,18 +833,6 @@ INSERT INTO `tcc_tests` (`id`, `lab_id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tcc_time_period`
---
-
-CREATE TABLE IF NOT EXISTS `tcc_time_period` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `time` varchar(1000) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `tcc_training`
 --
 
@@ -847,12 +925,16 @@ ALTER TABLE `tcc_certification`
   ADD CONSTRAINT `organisation_id_refs_id_6f799ae2` FOREIGN KEY (`organisation_id`) REFERENCES `tcc_organisation` (`id`);
 
 --
+-- Constraints for table `tcc_consultancy`
+--
+ALTER TABLE `tcc_consultancy`
+  ADD CONSTRAINT `tcc_consultancy_ibfk_1` FOREIGN KEY (`department`) REFERENCES `tcc_departments` (`id`);
+
+--
 -- Constraints for table `tcc_courses`
 --
 ALTER TABLE `tcc_courses`
-  ADD CONSTRAINT `department_id_refs_id_146dabfe` FOREIGN KEY (`department_id`) REFERENCES `tcc_departments` (`id`),
-  ADD CONSTRAINT `graduation_id_refs_id_41f97b60` FOREIGN KEY (`graduation_id`) REFERENCES `tcc_graduation` (`id`),
-  ADD CONSTRAINT `timeperiod_id_refs_id_405c812e` FOREIGN KEY (`timeperiod_id`) REFERENCES `tcc_time_period` (`id`);
+  ADD CONSTRAINT `tcc_courses_ibfk_1` FOREIGN KEY (`pg_id`) REFERENCES `tcc_pgcourses` (`id`);
 
 --
 -- Constraints for table `tcc_departments`
