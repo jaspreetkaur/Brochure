@@ -54,18 +54,16 @@ while($row = mysql_fetch_array($dep))
 $depid= $row['id'];
 $name = strtoupper($row['name']);
 echo "<br/>";
-echo "<b>".$name."</b>"."<br/>"; 
+echo "<b><i>".$depid.". ".$name."</i></b>"."<br/>"; 
 echo $row['url']."<br/>"."<br/>"; 
-echo $row['about']."<br/>"; 
+echo $row['about']; 
 
 $lab= mysql_query("SELECT DISTINCT tcc_labs.lab, tcc_labs.id from tcc_labs, tcc_departments WHERE $depid= tcc_labs.department_id");
-
-echo "<b>"."Labs"."</b>"."<br/>";
-
+echo "<br/><b>"."Labs"."</b>"."<br/>";
 while($rows = mysql_fetch_array($lab))
 {
 $lid= $rows['id'];
-echo "<br/><i>".$lid.". ".$rows['lab']."</i>";
+echo "<br/><i>".$rows['lab']."</i>";
 echo "<br/>";
 
 $test= mysql_query("SELECT DISTINCT tcc_tests.name, tcc_tests.id from tcc_tests, tcc_labs, tcc_departments where $depid= tcc_labs.department_id and $lid= tcc_tests.lab_id");

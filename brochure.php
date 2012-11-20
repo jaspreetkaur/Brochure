@@ -59,7 +59,19 @@ echo $row['url']."<br/>"."<br/>";
 echo $row['about']; 
 
 $lab= mysql_query("SELECT DISTINCT tcc_labs.lab, tcc_labs.id from tcc_labs, tcc_departments WHERE $depid= tcc_labs.department_id");
-echo "<br/><b>"."Labs"."</b>"."<br/>";
+$lid= mysql_query("SELECT DISTINCT department_id from tcc_labs WHERE tcc_labs.department_id= $depid");
+while($l = mysql_fetch_array($lid))
+{
+$c= $l['department_id'];
+if (count($c)== "0")
+{
+echo " ";
+}
+else
+{
+echo "<b>"."Labs"."</b>"."<br/>";
+}
+ }
 while($rows = mysql_fetch_array($lab))
 {
 $lid= $rows['id'];
